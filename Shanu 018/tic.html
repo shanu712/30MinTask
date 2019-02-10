@@ -1,0 +1,255 @@
+<!doctype.html>
+<html>
+<head><title>TICTAC</title>
+     <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+    <style>
+        #main{
+            width: 400px;
+             margin-left:450px;
+            height: 450px;
+            border: 2px solid black;
+            margin-left: 450px;
+            
+        }
+        
+        input{width:133px;
+        height: 150px;
+            float:left;
+            font-size: 50px;
+            
+        }
+        #btnReset{
+            width: 404px;
+            height: 90px;
+            margin-left: 450px;
+            margin-top: 10px;
+             border-radius:20px; 
+            
+        }
+       
+        body{
+    height:109vh;
+    position: relative;
+    margin:0 auto;
+  background-image : linear-gradient(rgba(0,0,0,.6)  ,rgba(0,0,0,.6)) ,   url('https://images.unsplash.com/photo-1510148199876-8a856ee41d42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
+  background-size: cover;
+    background-repeat: no-repeat;
+    background-size: cover;
+  opacity:0.8;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}  
+        
+    </style>
+    </head>
+<body>
+    <h1>WELCOME TO TIC TAC TOE</h1>
+
+         
+    
+    
+        
+    <div id = "main">
+        <input type="button"  id="btn1" onclick="Click('btn1')">
+         <input type="button" id="btn2" onclick="Click('btn2')">
+         <input type="button" id="btn3" onclick="Click('btn3')">
+         <input type="button" id="btn4" onclick="Click('btn4')">
+         <input type="button" id="btn5" onclick="Click('btn5')">
+         <input type="button" id="btn6" onclick="Click('btn6')">
+         <input type="button" id="btn7" onclick="Click('btn7')">
+         <input type="button" id="btn8" onclick="Click('btn8')">
+         <input type="button" id="btn9" onclick="Click('btn9')">
+    </div>
+    <input type ="button" id ="btnReset" onclick="Reset()" value ="RESET">
+    
+    
+    
+    <script> 
+            var Score=0;
+var ID;
+        var Password;
+        var game =1;
+        
+        var username;
+    function Click(btn){
+        var count = 0;
+    var x = "X";
+    var o = "O";
+    
+    //var scoreShow = document.getElementById("scoreShow");
+        var url=new URL(window.location.href);
+
+     username=url.searchParams.get('id');
+        
+    //var Password = localStorage.getItem("Password");
+         $.ajax({
+        type: 'GET',
+        url: 'http://localhost:56574/api/Players',
+        success: function(data) {
+            for(i=0; i<data.length;i++){
+                if(username.toUpperCase() == data[i].Username.toUpperCase()){
+                    ID=data[i].ID;
+                    Score = data[i].Score;
+                    username = data[i].Username;
+                    Password=data[i].Password
+                     //console.log(Score);
+                    
+                }
+            }
+        }
+    });
+        if(game==1)
+            {
+        document.getElementById(btn).value="X";
+        game  -= 1;
+             document.getElementById(btn).disabled="disabled";
+                Winner();
+        
+            }
+        else{
+            document.getElementById(btn).value="O";
+            game  +=1;
+             document.getElementById(btn).disabled="disabled";
+            Winner();
+        
+        }
+    
+    }
+        function Winner(){
+            if( //all possible way for X to win
+                document.getElementById("btn1").value=="X"&&
+               document.getElementById("btn2").value=="X"&&
+               document.getElementById("btn3").value=="X"||document.getElementById("btn4").value=="X"&&
+               document.getElementById("btn5").value=="X"&&
+               document.getElementById("btn6").value=="X"||document.getElementById("btn7").value=="X"&&
+               document.getElementById("btn8").value=="X"&&
+               document.getElementById("btn9").value=="X"||document.getElementById("btn1").value=="X"&&
+               document.getElementById("btn5").value=="X"&&
+               document.getElementById("btn9").value=="X"||document.getElementById("btn3").value=="X"&&
+               document.getElementById("btn5").value=="X"&&
+               document.getElementById("btn7").value=="X"||document.getElementById("btn1").value=="X"&&
+               document.getElementById("btn4").value=="X"&&
+               document.getElementById("btn7").value=="X"||document.getElementById("btn2").value=="X"&&
+               document.getElementById("btn5").value=="X"&&
+               document.getElementById("btn8").value=="X"||document.getElementById("btn3").value=="X"&&
+               document.getElementById("btn6").value=="X"&&
+               document.getElementById("btn9").value=="X"
+            )
+               {
+             //  document.write("X WINs")
+                   Score=Score+10;
+                   alert("X WINS!!! ");
+                   alert("your score" +Score);
+                   var userdata = {
+            // "Id": ,      //  no need of id(auto increment) in put request 
+                       "ID":ID,   //PRIMARY KEY
+            "Username": username,     
+            "Password": Password,
+            "Score": Score
+        }
+                    $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:56574/api/Players/' +ID,  
+            data: userdata,
+            success: function(data) {
+    
+                alert("Score Info Updated !!");
+               // location.replace("list.html");
+            }
+        });
+                //   alert("X wins");
+                   Reset();
+               }
+           if( document.getElementById("btn1").value=="O"&&
+               document.getElementById("btn2").value=="O"&&
+               document.getElementById("btn3").value=="O"||document.getElementById("btn4").value=="O"&&
+               document.getElementById("btn5").value=="O"&&
+               document.getElementById("btn6").value=="O"||document.getElementById("btn7").value=="O"&&
+               document.getElementById("btn8").value=="O"&&
+               document.getElementById("btn9").value=="O"||document.getElementById("btn1").value=="O"&&
+               document.getElementById("btn5").value=="O"&&
+               document.getElementById("btn9").value=="O"||document.getElementById("btn3").value=="O"&&
+               document.getElementById("btn5").value=="O"&&
+               document.getElementById("btn7").value=="O"||document.getElementById("btn1").value=="O"&&
+               document.getElementById("btn4").value=="O"&&
+               document.getElementById("btn7").value=="O"||document.getElementById("btn2").value=="O"&&
+               document.getElementById("btn5").value=="O"&&
+               document.getElementById("btn8").value=="O"||document.getElementById("btn3").value=="O"&&
+               document.getElementById("btn6").value=="O"&&
+               document.getElementById("btn9").value=="O"
+            )
+              
+               {
+             //  document.write("O WINs")
+                    Score=Score-5;
+                   alert("o Wins!!");
+                   alert("your score" +Score);
+                   
+                        
+                   
+                
+                   var userdata = {
+            // "Id": ,      //  no need of id(auto increment) in put request 
+                       "ID":ID,   //PRIMARY KEY
+            "Username": username,     
+            "Password": Password,
+            "Score": Score
+        }
+                    $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:56574/api/Players/' +ID,  
+            data: userdata,
+            success: function(data) {
+                                    
+                alert("Score Info Updated !!");
+               
+               // location.replace("list.html");
+            }
+        });
+                   Reset();
+               }
+            
+                           
+        }
+        
+        function Reset()
+        {
+            document.getElementById("btn1").value=""
+            document.getElementById("btn2").value=""
+            document.getElementById("btn3").value=""
+            document.getElementById("btn4").value=""
+            document.getElementById("btn5").value=""
+            document.getElementById("btn6").value=""
+            document.getElementById("btn7").value=""
+            document.getElementById("btn8").value=""
+            document.getElementById("btn9").value=""
+            
+             document.getElementById("btn1").disabled=""
+            document.getElementById("btn2").disabled=""
+            document.getElementById("btn3").disabled=""
+            document.getElementById("btn4").disabled=""
+            document.getElementById("btn5").disabled=""
+            document.getElementById("btn6").disabled=""
+            document.getElementById("btn7").disabled=""
+            document.getElementById("btn8").disabled=""
+            document.getElementById("btn9").disabled=""
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        }
+    
+    </script>
+    </body>
+</html>

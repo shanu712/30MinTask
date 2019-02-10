@@ -1,0 +1,45 @@
+<!doctype.html>
+<html>
+<head><title>LOGIN PAGE</title>
+    <link rel="stylesheet" href="log.css"> 
+ <!--   <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>  -->
+    </head>
+    <body>
+       
+            <script>
+       function fun()
+                {
+                     var user=document.getElementById("user").value;
+                    
+                    window.location.href = "tic.html?id="+user;
+                                   
+
+
+                   
+                }
+        </script> 
+  <div class="login-page">  
+  <div class="form">
+    <form class="register-form">
+        <h2>LOGIN FORM</h2>
+     
+      <p class="message">Already registered? <a href="#">Sign In</a></p>
+    </form>
+    <form class="login-form">
+      <input type="text" placeholder="username" id="user"/>
+      <input type="password" placeholder="password"/>
+         
+        <button onclick="fun()">Login</button>
+        
+    </form>
+  </div>
+</div>
+    </body>
+</html>
+            
+            
+            
+            
